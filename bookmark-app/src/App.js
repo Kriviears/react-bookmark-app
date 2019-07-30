@@ -26,6 +26,26 @@ class App extends Component {
     })
   }
 
+  deleteBookmark = bookmarkId => {
+    const newBookmarks = this.state.bookmarks.filter(bm =>
+      bm.id !== bookmarkId
+    )
+    this.setState({
+      bookmarks: newBookmarks
+    })
+  }
+
+  updateBookmark = updatedBookmark =>{
+    const newBookmarks = this.state.bookmarks(bm =>
+      (bm.id === updatedBookmark.id) ?
+        updatedBookmark : bm
+      )
+
+    this.setState({
+      bookmarks: newBookmarks
+    })
+  }
+
   componentDidMount() {
     fetch(config.API_ENDPOINT, {
       method: 'GET',
@@ -48,6 +68,8 @@ class App extends Component {
     const contextValue = {
       bookmarks: this.state.bookmarks,
       addBookmark: this.addBookmark,
+      deleteBookmark: this.deleteBookmark,
+      updateBookmark: this.updateBookmark
     }
     return (
       <main className='App'>
@@ -63,6 +85,10 @@ class App extends Component {
               exact
               path='/'
               component={BookmarkList}
+            />
+            <Route
+              path='/edit-bookmark'
+              component={EditBookmark}
             />
           </div>
         </BookmarksContext.Provider>
